@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: MarketplaceDublin
+      POSTGRES_PASSWORD: MarketplaceDublin
+      POSTGRES_DB: MarketplaceDublin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+#      mem_limit: 1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
+  backend:
+    build: .
+    container_name: backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/MarketplaceDublin
+      SPRING_DATASOURCE_USERNAME: MarketplaceDublin
+      SPRING_DATASOURCE_PASSWORD: MarketplaceDublin
+      ELASTICSEARCH_HOST: elasticsearch
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2  # Cache Maven dependencies
+    depends_on:
+      - postgres
+      - elasticsearch
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  esdata:
+
+networks:
+  app-network:
+    driver: bridge
