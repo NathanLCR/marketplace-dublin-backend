@@ -1,9 +1,9 @@
 package com.nathanlcr.MarketplaceDublin.controller;
 
-import com.nathanlcr.MarketplaceDublin.entity.User;
 import com.nathanlcr.MarketplaceDublin.service.AuthenticationService;
 import com.nathanlcr.MarketplaceDublin.service.Dto.LoginDto;
 import com.nathanlcr.MarketplaceDublin.service.Dto.LoginResponseDto;
+import com.nathanlcr.MarketplaceDublin.service.Dto.UserDto;
 import com.nathanlcr.MarketplaceDublin.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +20,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody User registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
-
+    public ResponseEntity<UserDto> register(@RequestBody UserDto registerUserDto) {
+        UserDto registeredUser = authenticationService.signup(registerUserDto);
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginDto loginDto) {
-        User authenticatedUser = authenticationService.authenticate(loginDto);
-
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponseDto loginResponse = new LoginResponseDto(jwtToken, jwtService.getExpirationTime());
-
-        return ResponseEntity.ok(loginResponse);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
+        return ResponseEntity.ok(authenticationService.login(loginDto));
     }
 }

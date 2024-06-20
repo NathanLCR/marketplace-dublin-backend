@@ -2,13 +2,16 @@ package com.nathanlcr.MarketplaceDublin.error;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Getter
-@Setter
-public class UserNotFoundException extends Exception{
-    private String message;
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String message){
-        super();
-        this.message = message;
+        super(message);
+    }
+
+    public UserNotFoundException(String message, Throwable cause) {
+        super(message,cause);
     }
 }

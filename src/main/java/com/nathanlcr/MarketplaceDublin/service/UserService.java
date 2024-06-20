@@ -2,17 +2,16 @@ package com.nathanlcr.MarketplaceDublin.service;
 
 import com.nathanlcr.MarketplaceDublin.entity.User;
 import com.nathanlcr.MarketplaceDublin.error.UserNotFoundException;
+import com.nathanlcr.MarketplaceDublin.service.Dto.UserDto;
 import org.springframework.data.domain.Page;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserDto editUser(UserDto user);
 
-    User editUser(User user);
+    UserDto getUser(Integer id);
 
-    User getUser(Integer id);
+    Page<UserDto> getUsers();
 
-    Page<User> getUsers();
-
-    User getUserByEmail(String email) throws UserNotFoundException, UserNotFoundException;
+    UserDto getUserAuthenticated();
 }
