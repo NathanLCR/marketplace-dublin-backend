@@ -37,6 +37,9 @@ public class User implements Serializable, UserDetails {
     @Column(name = "cellphone_number")
     private String cellphoneNumber;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     private Boolean active = true;
 
 //    @ToString.Exclude

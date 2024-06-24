@@ -44,6 +44,10 @@ public class Item implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

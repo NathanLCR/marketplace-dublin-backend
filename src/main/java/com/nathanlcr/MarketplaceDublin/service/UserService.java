@@ -3,15 +3,16 @@ package com.nathanlcr.MarketplaceDublin.service;
 import com.nathanlcr.MarketplaceDublin.entity.User;
 import com.nathanlcr.MarketplaceDublin.error.UserNotFoundException;
 import com.nathanlcr.MarketplaceDublin.service.Dto.UserDto;
+import com.nathanlcr.MarketplaceDublin.service.Dto.UserResponseDto;
 import org.springframework.data.domain.Page;
 
 public interface UserService {
 
-    UserDto editUser(UserDto user);
+    UserResponseDto editUser(UserDto user);
 
-    UserDto getUser(Integer id);
+    UserResponseDto getUser(Integer id);
 
-    Page<UserDto> getUsers();
+    Page<UserResponseDto> getUsers();
 
-    UserDto getUserAuthenticated();
+    UserResponseDto getUserAuthenticated();
 }

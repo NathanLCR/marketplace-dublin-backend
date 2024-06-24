@@ -5,8 +5,9 @@ import com.nathanlcr.MarketplaceDublin.error.NotCurrentUserException;
 import com.nathanlcr.MarketplaceDublin.error.UserNotFoundException;
 import com.nathanlcr.MarketplaceDublin.repository.UserRepository;
 import com.nathanlcr.MarketplaceDublin.service.Dto.UserDto;
+import com.nathanlcr.MarketplaceDublin.service.Dto.UserResponseDto;
 import com.nathanlcr.MarketplaceDublin.service.UserService;
-import com.nathanlcr.MarketplaceDublin.service.mapper.UserMapper;
+import com.nathanlcr.MarketplaceDublin.service.mapper.UserResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -21,40 +22,40 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserResponseMapper userResponseMapper;
 
     @Override
-    public UserDto editUser(UserDto user) {
-        UserDto userAuthenticated = getUserAuthenticated();
+    public UserResponseDto editUser(UserDto user) {
+        UserResponseDto userAuthenticated = getUserAuthenticated();
         userAuthenticated.getEmail().equals(user.getEmail());
         if(userAuthenticated.getId().equals(user.getId())) {
             throw new NotCurrentUserException();
         }
 //        User savedUser = userRepository.save(user);
 //        return userMapper.toDto(userRepository.save(user));
-        return user;
+        return userAuthenticated;
     }
 
     @Override
-    public UserDto getUser(Integer id) {
+    public UserResponseDto getUser(Integer id) {
         return null;
     }
 
     @Override
-    public UserDto getUserAuthenticated() {
+    public UserResponseDto getUserAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
-        return userMapper.toDto(currentUser);
+        return userResponseMapper.toDto(currentUser);
     }
 
     @Override
-    public Page<UserDto> getUsers() {
+    public Page<UserResponseDto> getUsers() {
         return null;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmailIgnoreCase(username).orElseThrow();
+        return userRepository.findByEmailIgnoreCase(username).orElseThrow(UserNotFoundException::new);
     }
 }

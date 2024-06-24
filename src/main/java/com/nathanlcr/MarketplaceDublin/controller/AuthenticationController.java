@@ -4,6 +4,7 @@ import com.nathanlcr.MarketplaceDublin.service.AuthenticationService;
 import com.nathanlcr.MarketplaceDublin.service.Dto.LoginDto;
 import com.nathanlcr.MarketplaceDublin.service.Dto.LoginResponseDto;
 import com.nathanlcr.MarketplaceDublin.service.Dto.UserDto;
+import com.nathanlcr.MarketplaceDublin.service.Dto.UserResponseDto;
 import com.nathanlcr.MarketplaceDublin.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> register(@RequestBody UserDto registerUserDto) {
-        UserDto registeredUser = authenticationService.signup(registerUserDto);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<UserResponseDto> register(@RequestBody UserDto registerUserDto) {
+        return ResponseEntity.ok(authenticationService.signup(registerUserDto));
     }
 
     @PostMapping("/login")

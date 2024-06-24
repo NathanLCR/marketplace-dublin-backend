@@ -6,13 +6,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class UserDto implements Serializable {
+public class UserResponseDto implements Serializable {
 
     private Integer id;
 
     private String fullName;
-
-    private String password;
 
     private String email;
 
@@ -23,5 +21,4 @@ public class UserDto implements Serializable {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
 }

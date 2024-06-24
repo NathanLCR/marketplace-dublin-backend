@@ -1,5 +1,6 @@
 package com.nathanlcr.MarketplaceDublin.config;
 
+import com.nathanlcr.MarketplaceDublin.error.UserNotFoundException;
 import com.nathanlcr.MarketplaceDublin.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ public class ApplicationConfiguration {
     @Bean
     UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmailIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Bean
