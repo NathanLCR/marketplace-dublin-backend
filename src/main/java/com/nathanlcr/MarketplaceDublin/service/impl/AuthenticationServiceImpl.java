@@ -2,6 +2,7 @@ package com.nathanlcr.MarketplaceDublin.service.impl;
 
 import com.nathanlcr.MarketplaceDublin.entity.User;
 import com.nathanlcr.MarketplaceDublin.error.UserNotFoundException;
+import com.nathanlcr.MarketplaceDublin.error.ValidationException;
 import com.nathanlcr.MarketplaceDublin.repository.UserRepository;
 import com.nathanlcr.MarketplaceDublin.service.AuthenticationService;
 import com.nathanlcr.MarketplaceDublin.service.Dto.LoginDto;
@@ -35,6 +36,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
 
     public UserResponseDto signup(UserDto input) {
+
+        if (userRepository.existsByEmailIgnoreCase(input.getEmail())) {
+            throw new ValidationException("Email already exists");
+        }
+
         User newUser = userMapper.toEntity(input);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 

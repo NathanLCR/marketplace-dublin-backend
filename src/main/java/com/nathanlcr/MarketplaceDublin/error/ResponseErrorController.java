@@ -19,4 +19,9 @@ public class ResponseErrorController {
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
         return ResponseEntity.status(401).body("Password does not match");
     }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException exception) {
+        return ResponseEntity.status(409).body(exception.getMessage());
+    }
 }
